@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { animateScroll as scroll } from 'react-scroll';
 import SearchBar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
@@ -126,3 +127,15 @@ export class App extends React.Component {
     );
   }
 }
+App.propTypes = {
+  showModal: PropTypes.bool,
+  loading: PropTypes.bool,
+  query: PropTypes.string,
+  images: PropTypes.arrayOf(PropTypes.object),
+  total: PropTypes.number,
+  modalImage: PropTypes.exact({
+    largeImageURL: PropTypes.string,
+    tags: PropTypes.string,
+  }),
+  page: PropTypes.number,
+};

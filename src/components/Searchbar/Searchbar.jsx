@@ -1,4 +1,5 @@
 import { FaSearch } from 'react-icons/fa';
+import PropTypes from 'prop-types';
 import { IconContext } from 'react-icons';
 const SearchBar = ({ onSubmitForm, onInputChange }) => {
   return (
@@ -30,5 +31,8 @@ const SearchBar = ({ onSubmitForm, onInputChange }) => {
     </header>
   );
 };
-
+SearchBar.propTypes = {
+  onSubmitForm: PropTypes.func,
+  onInputChange: PropTypes.func,
+};
 export default SearchBar;

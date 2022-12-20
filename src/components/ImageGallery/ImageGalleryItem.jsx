@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 const ImageGalleryItem = ({ webformatURL, tags, onImageClick, id }) => {
   return (
     <li className="ImageGalleryItem" onClick={onImageClick} id={id}>
@@ -5,5 +6,10 @@ const ImageGalleryItem = ({ webformatURL, tags, onImageClick, id }) => {
     </li>
   );
 };
-
+ImageGalleryItem.propTypes = {
+  webformatURL: PropTypes.string,
+  tags: PropTypes.string,
+  onImageClick: PropTypes.func,
+  id: PropTypes.number,
+};
 export default ImageGalleryItem;

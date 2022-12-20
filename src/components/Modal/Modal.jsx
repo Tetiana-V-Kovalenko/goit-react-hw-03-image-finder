@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
 const modalRoot = document.querySelector('#modal-root');
 class Modal extends React.Component {
@@ -21,7 +22,6 @@ class Modal extends React.Component {
     }
   };
   render() {
-    console.log(this.props);
     const { largeImageURL, tags } = this.props;
     return createPortal(
       <div className="Overlay" onClick={this.handleOvarlayClick}>
@@ -33,4 +33,9 @@ class Modal extends React.Component {
     );
   }
 }
+Modal.propTypes = {
+  largeImageURL: PropTypes.string,
+  tags: PropTypes.string,
+  onClose: PropTypes.func,
+};
 export default Modal;
