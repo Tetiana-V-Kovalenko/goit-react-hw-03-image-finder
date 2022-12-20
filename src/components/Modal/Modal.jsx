@@ -26,7 +26,11 @@ class Modal extends React.Component {
     return createPortal(
       <div className="Overlay" onClick={this.handleOvarlayClick}>
         <div className="Modal">
-          <img src={largeImageURL} alt="Your image" className="Modal_image" />
+          <img
+            src={largeImageURL}
+            alt={largeImageURL}
+            className="Modal_image"
+          />
         </div>
       </div>,
       modalRoot
