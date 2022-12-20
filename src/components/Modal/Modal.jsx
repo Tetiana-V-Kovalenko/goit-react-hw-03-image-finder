@@ -22,11 +22,11 @@ class Modal extends React.Component {
     }
   };
   render() {
-    const { largeImageURL, tags } = this.props;
+    const { largeImageURL } = this.props;
     return createPortal(
       <div className="Overlay" onClick={this.handleOvarlayClick}>
         <div className="Modal">
-          <img src={largeImageURL} alt="Image" className="Modal_image" />
+          <img src={largeImageURL} alt="Your image" className="Modal_image" />
         </div>
       </div>,
       modalRoot
@@ -35,7 +35,7 @@ class Modal extends React.Component {
 }
 Modal.propTypes = {
   largeImageURL: PropTypes.string,
-  tags: PropTypes.string,
+
   onClose: PropTypes.func,
 };
 export default Modal;
