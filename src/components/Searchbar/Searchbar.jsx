@@ -1,38 +1,56 @@
 import { FaSearch } from 'react-icons/fa';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { IconContext } from 'react-icons';
-const SearchBar = ({ onSubmitForm, onInputChange }) => {
-  return (
-    <header className="Searchbar">
-      <form className="SearchForm" onSubmit={onSubmitForm}>
-        <button type="submit" className="SearchForm-button">
-          <span className="SearchForm-button-label">
-            <IconContext.Provider
-              value={{
-                size: '30px',
+class SearchBar extends React.Component {
+  state = {
+    query: '',
+  };
 
-                className: 'global-class-name',
-              }}
-            >
-              <FaSearch />
-            </IconContext.Provider>
-          </span>
-        </button>
+  onInputChange = e => {
+    this.setState({ query: e.target.value });
+  };
 
-        <input
-          onChange={onInputChange}
-          className="SearchForm-input "
-          type="text"
-          autoComplete="off"
-          autoFocus
-          placeholder="Search images and photos"
-        />
-      </form>
-    </header>
-  );
-};
+  onSubmitForm = e => {
+    e.preventDefault();
+    this.props.handleSubmit(this.state.query);
+    this.setState({ query: '' });
+  };
+
+  render() {
+    return (
+      <header className="Searchbar">
+        <form className="SearchForm" onSubmit={this.onSubmitForm}>
+          <button type="submit" className="SearchForm-button">
+            <span className="SearchForm-button-label">
+              <IconContext.Provider
+                value={{
+                  size: '30px',
+
+                  className: 'global-class-name',
+                }}
+              >
+                <FaSearch />
+              </IconContext.Provider>
+            </span>
+          </button>
+
+          <input
+            onChange={this.onInputChange}
+            className="SearchForm-input "
+            type="text"
+            autoComplete="off"
+            autoFocus
+            value={this.state.query}
+            placeholder="Search images and photos"
+          />
+        </form>
+      </header>
+    );
+  }
+}
+
 SearchBar.propTypes = {
-  onSubmitForm: PropTypes.func,
-  onInputChange: PropTypes.func,
+  handleSubmit: PropTypes.func,
 };
 export default SearchBar;

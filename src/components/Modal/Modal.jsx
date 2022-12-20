@@ -6,7 +6,7 @@ class Modal extends React.Component {
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeydown);
   }
-  componentDidUpdate() {}
+
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeydown);
   }
@@ -26,7 +26,7 @@ class Modal extends React.Component {
     return createPortal(
       <div className="Overlay" onClick={this.handleOvarlayClick}>
         <div className="Modal">
-          <img src={largeImageURL} alt={tags} className="Modal_image" />
+          <img src={largeImageURL} alt="Image" className="Modal_image" />
         </div>
       </div>,
       modalRoot

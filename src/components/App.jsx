@@ -5,10 +5,7 @@ import SearchBar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Modal from './Modal/Modal';
 import ButtonLoad from './Button/ButtonLoad';
-import {
-  fetchImagesOnSubmit,
-  fetchImagesOnBtnLoadClick,
-} from 'PixabayApi/PixabayApi';
+import { fetchImagesOnBtnLoadClick } from 'PixabayApi/PixabayApi';
 import Loader from './Loader/Loader';
 import 'styles.css';
 
@@ -21,6 +18,7 @@ export class App extends React.Component {
     total: 0,
     modalImage: {},
     page: 1,
+    error: null,
   };
 
   state = {
@@ -31,12 +29,14 @@ export class App extends React.Component {
     images: this.props.images,
     total: this.props.total,
     modalImage: this.props.modalImage,
+    error: this.props.error,
   };
 
-  componentDidMount() {}
-
   async componentDidUpdate(prevProps, prevState) {
-    if (this.state.page !== prevState.page) {
+    if (
+      this.state.page !== prevState.page ||
+      this.state.query !== prevState.query
+    ) {
       try {
         const images = await fetchImagesOnBtnLoadClick(
           this.state.query,
@@ -44,6 +44,7 @@ export class App extends React.Component {
         );
         this.setState(prevState => ({
           images: [...prevState.images, ...images.hits],
+          total: images.totalHits,
         }));
       } catch (error) {
         console.log(error);
@@ -57,21 +58,16 @@ export class App extends React.Component {
     scroll.scrollMore(450);
   };
 
-  onInputChange = e => {
-    this.setState({ query: e.target.value });
-  };
-
-  onSubmitForm = async e => {
-    e.preventDefault();
-    this.setState({ loading: true });
-    try {
-      const images = await fetchImagesOnSubmit(this.state.query);
-      this.setState({ images: images.hits, total: images.total });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      this.setState({ loading: false, page: 1 });
-    }
+  handleFormSubmit = query => {
+    this.setState({
+      showModal: false,
+      images: [],
+      total: 0,
+      modalImage: {},
+      page: 1,
+      loading: true,
+      query: query,
+    });
   };
 
   onBtnLoad = () => {
@@ -83,13 +79,9 @@ export class App extends React.Component {
   };
 
   onImageClick = e => {
-    const targetImage = this.state.images.find(
-      ({ id }) => id === Number(e.currentTarget.id)
-    );
     this.setState({
       modalImage: {
-        tags: targetImage.tags,
-        largeImageURL: targetImage.largeImageURL,
+        largeImageURL: e.currentTarget.id,
       },
     });
     this.toggleShowModal();
@@ -103,18 +95,14 @@ export class App extends React.Component {
     const { showModal, images, modalImage, loading, total, page } = this.state;
     return (
       <div className="App">
-        <SearchBar
-          onSubmitForm={this.onSubmitForm}
-          onInputChange={this.onInputChange}
-        />
+        <SearchBar handleSubmit={this.handleFormSubmit} />
         {images.length !== 0 && (
           <ImageGallery imagesArr={images} onImageClick={this.onImageClick} />
         )}
         {loading && <Loader />}
-        {images.length >= 0 &&
-          total > 12 &&
-          12 * page < total &&
-          loading === false && <ButtonLoad onBtnLoad={this.onBtnLoad} />}
+        {!loading && total > 12 * page && (
+          <ButtonLoad onBtnLoad={this.onBtnLoad} />
+        )}
 
         {showModal && (
           <Modal
@@ -135,7 +123,7 @@ App.propTypes = {
   total: PropTypes.number,
   modalImage: PropTypes.exact({
     largeImageURL: PropTypes.string,
-    tags: PropTypes.string,
   }),
   page: PropTypes.number,
+  error: PropTypes.instanceOf(Error),
 };

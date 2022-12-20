@@ -10,6 +10,6 @@ ImageGalleryItem.propTypes = {
   webformatURL: PropTypes.string,
   tags: PropTypes.string,
   onImageClick: PropTypes.func,
-  id: PropTypes.number,
+  id: PropTypes.string,
 };
 export default ImageGalleryItem;
